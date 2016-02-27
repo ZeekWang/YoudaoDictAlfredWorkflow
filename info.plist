@@ -198,6 +198,6 @@ print(Youdao.query_phonetic("{query}"));</string>
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/ZeekWang</string>
 </dict>
 </plist>
