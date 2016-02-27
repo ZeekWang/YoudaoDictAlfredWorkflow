@@ -29,25 +29,27 @@ def query_api(word):
 
 def handle_error(query_result, output):
     error_code = query_result["errorCode"];
-    if error_code != 0:
-        if error_code == 60:
-            output.append(item("查无此单词", "", icon="icon.png"));
-        else:
-            output.append(item("有道查词错误", "", icon="icon.png"));
-    return error_code == 0;
+    status = True;
+    if (error_code == 60) or (error_code == 0 and not "basic" in query_result):
+        output.append(item("无此单词释义", "", icon="icon.png"));
+        status = False;
+    elif error_code != 0:
+        output.append(item("有道查词错误", "", icon="icon.png"));
+        status = False;
+    return status;
 
 def output_word_explains(word, query_result, output):
-        basic = query_result["basic"];
-        explains = basic["explains"];
-        title = " ".join(explains);
-        sub_title = word;
-        if "us-phonetic" in basic:
-            sub_title += "  美:[" + basic["us-phonetic"] + "]";
-        if "uk-phonetic" in basic:
-            sub_title += "  英:[" + basic["uk-phonetic"] + "]";
-        output.append(item(title, sub_title));
-        for explain in explains:
-            output.append(item(explain, word));
+    basic = query_result["basic"];
+    explains = basic["explains"];
+    title = " ".join(explains);
+    sub_title = word;
+    if "us-phonetic" in basic:
+        sub_title += "  美:[" + basic["us-phonetic"] + "]";
+    if "uk-phonetic" in basic:
+        sub_title += "  英:[" + basic["uk-phonetic"] + "]";
+    output.append(item(title, sub_title));
+    for explain in explains:
+        output.append(item(explain, word));
 
 def query_word(word):
     output = [];
